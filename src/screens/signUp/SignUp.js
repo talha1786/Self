@@ -5,11 +5,19 @@ import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export class SignUp extends React.Component {
+  sendData = (param, param2) => {
+    console.warn('this is param1 = ' + param);
+    console.warn('this is param2 = ' + param2);
+  };
+  sendData2 = sign => {
+    console.warn('this is sign = ' + sign);
+  };
   render() {
     return (
       <KeyboardAwareScrollView
         contentContainerStyle={{
           flexGrow: 2,
+          backgroundColor: '#f5a3',
         }}>
         <View
           style={{
@@ -52,8 +60,8 @@ export class SignUp extends React.Component {
 
           <View
             style={{
-              height: '50%',
-              //   backgroundColor: 'green',
+              height: '45%',
+              // backgroundColor: 'white',
               padding: 15,
             }}>
             <TextInput
@@ -88,11 +96,32 @@ export class SignUp extends React.Component {
             />
             <View
               style={{
+                // backgroundColor: '#faf',
+                // height: '10%',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}>
+              <Text
+                style={{
+                  // marginTop: 5,
+                  color: 'black',
+                }}>
+                forget password
+              </Text>
+            </View>
+
+            <View
+              style={{
                 width: '100%',
                 marginTop: 40,
                 alignItems: 'center',
               }}>
               <TouchableOpacity
+                onPress={() => {
+                  const param = 'created';
+                  const param2 = 'already created';
+                  this.sendData(param, param2);
+                }}
                 style={{
                   height: 50,
                   width: '70%',
@@ -109,6 +138,37 @@ export class SignUp extends React.Component {
                 </Text>
               </TouchableOpacity>
             </View>
+          </View>
+
+          <View
+            style={{
+              // backgroundColor: '#faf',
+              height: '10%',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              padding: 15,
+            }}>
+            <Text
+              style={{
+                marginTop: 5,
+              }}>
+              already have an account?{'  '}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                const sign = 'signIn';
+                this.sendData2(sign);
+              }}>
+              <Text
+                style={{
+                  color: 'red',
+                  textDecorationLine: 'underline',
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                }}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAwareScrollView>
