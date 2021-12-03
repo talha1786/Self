@@ -1,12 +1,11 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 // import {View, Text} from 'react-native';
-import {Basics} from './src/screens/basics';
-import {BasicsTwo} from './src/screens/basicsTwo';
-import {SignUp} from './src/screens/signUp';
-import {Test} from './src/screens/test';
-
+import {ScreenNavigator} from './src/navigation/ScreenNavigator';
+import {LogBox} from 'react-native';
+LogBox.ignoreLogs(['Reanimated 2']);
 const App = () => {
-  return <SignUp />;
+  return <ScreenNavigator />;
 };
 
 export default App;

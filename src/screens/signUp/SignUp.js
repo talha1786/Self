@@ -1,10 +1,26 @@
-/* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+/* eslint-disable no-alert */
 
+import React from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ImageBackground,
+  Image,
+  AsyncStorage,
+} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {AppBtn, AppInput, NavHeader} from '../../components';
 export class SignUp extends React.Component {
+  state = {
+    name: '',
+    email: '',
+    password: '',
+  };
+
   sendData = (param, param2) => {
     console.warn('this is param1 = ' + param);
     console.warn('this is param2 = ' + param2);
@@ -12,166 +28,219 @@ export class SignUp extends React.Component {
   sendData2 = sign => {
     console.warn('this is sign = ' + sign);
   };
+  createUser = () => {
+    const data = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+    };
+
+    this.state.name === ''
+      ? alert('Name is required')
+      : this.state.email === ''
+      ? alert('email is required')
+      : this.state.password.length < 8
+      ? alert('password must contain 8 characters')
+      : AsyncStorage.setItem('userData', JSON.stringify(data), () => {
+          this.props.navigation.navigate('TabNavigator');
+        });
+  };
   render() {
     return (
-      <KeyboardAwareScrollView
-        contentContainerStyle={{
-          flexGrow: 2,
-          backgroundColor: '#f5a3',
+      <ImageBackground
+        source={require('../../assets/bkkk.jpg')}
+        style={{
+          flex: 1,
+          //   backgroundColor: '#faf',
         }}>
-        <View
-          style={{
-            // backgroundColor: '#a1f',
-            flex: 1,
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            flexGrow: 2,
+            // backgroundColor: '#f5a3',
           }}>
           <View
             style={{
-              //   backgroundColor: 'gray',
-              height: '17%',
-            }}
-          />
-          <View
-            style={{
-              //   backgroundColor: '#fff',
-              paddingLeft: 25,
+              // backgroundColor: '#a1f',
+              flex: 1,
             }}>
-            <Text
-              style={{
-                fontSize: 25,
-                fontWeight: 'bold',
-                color: '#000',
-              }}>
-              welcome
-            </Text>
-            <Text
-              style={{
-                fontSize: 18,
-                color: '#000',
-              }}>
-              glad to see you!
-            </Text>
-          </View>
-          <View
-            style={{
-              //   backgroundColor: 'gray',
-              height: '10%',
-            }}
-          />
-
-          <View
-            style={{
-              height: '45%',
-              // backgroundColor: 'white',
-              padding: 15,
-            }}>
-            <TextInput
-              style={{
-                borderColor: 'red',
-                borderBottomWidth: 0.5,
-                color: 'blue',
-              }}
-              placeholder={'Name'}
-              placeholderTextColor={'black'}
-            />
-            <TextInput
-              style={{
-                borderColor: 'red',
-                borderBottomWidth: 0.5,
-                marginTop: 10,
-              }}
-              placeholder={'Email'}
-              placeholderTextColor={'black'}
-              keyboardType={'email-address'}
-            />
-
-            <TextInput
-              style={{
-                borderColor: 'red',
-                borderBottomWidth: 0.5,
-                marginTop: 10,
-              }}
-              placeholder={'Password'}
-              placeholderTextColor={'black'}
-              secureTextEntry
-            />
+            <NavHeader title={'SignUp'} />
             <View
               style={{
-                // backgroundColor: '#faf',
-                // height: '10%',
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
+                height: '20%',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}>
-              <Text
+              <View
                 style={{
-                  // marginTop: 5,
-                  color: 'black',
+                  // backgroundColor: '#aaf',
+                  height: 120,
+                  width: 120,
+                  borderWidth: 0.5,
+                  borderRadius: 60,
+                  overflow: 'hidden',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderColor: 'red',
                 }}>
-                forget password
-              </Text>
+                <Image
+                  source={require('../../assets/user.png')}
+                  style={{
+                    resizeMode: 'contain',
+                    height: '80%',
+                    width: '80%',
+                  }}
+                />
+              </View>
             </View>
 
             <View
               style={{
-                width: '100%',
-                marginTop: 40,
-                alignItems: 'center',
+                height: 350,
+                // backgroundColor: 'white',
+                padding: 15,
               }}>
+              <AppInput
+                ic={'ios-person'}
+                placeholder={'Name'}
+                placeholderTextColor={'#000'}
+                onChangeText={txt => this.setState({name: txt})}
+              />
+
+              <AppInput
+                ic={'ios-mail'}
+                placeholder={'Email'}
+                placeholderTextColor={'#000'}
+                onChangeText={txt => this.setState({email: txt})}
+                st={{
+                  marginTop: 10,
+                  marginBottom: 10,
+                }}
+              />
+
+              <View
+                style={{
+                  height: 55,
+                  // backgroundColor: '#faf',
+                  flexDirection: 'row',
+                  borderWidth: 0.5,
+                  borderRadius: 10,
+                }}>
+                <View
+                  style={{
+                    height: '100%',
+                    width: '15%',
+                    // backgroundColor: '#aaf',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRightWidth: 0.5,
+                  }}>
+                  <Ionicons name={'lock-closed'} size={20} color={'red'} />
+                </View>
+                <View
+                  style={{
+                    height: '100%',
+                    width: '75%',
+                    // backgroundColor: '#aaf',
+                  }}>
+                  <TextInput
+                    onChangeText={txt => this.setState({password: txt})}
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      paddingLeft: 10,
+                    }}
+                    placeholder={'Password'}
+                    placeholderTextColor={'#000'}
+                    secureTextEntry={this.state.secureTxt}
+                  />
+                </View>
+
+                {this.state.password !== '' ? (
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.setState({secureTxt: !this.state.secureTxt})
+                    }
+                    style={{
+                      height: '100%',
+                      width: '10%',
+                      // backgroundColor: '#aaf',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Ionicons
+                      name={
+                        this.state.secureTxt ? 'eye-outline' : 'eye-off-outline'
+                      }
+                      size={20}
+                      color={'red'}
+                    />
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+
               <TouchableOpacity
                 onPress={() => {
-                  const param = 'created';
-                  const param2 = 'already created';
-                  this.sendData(param, param2);
+                  console.warn('1');
+                  console.log('2');
                 }}
                 style={{
-                  height: 50,
-                  width: '70%',
-                  backgroundColor: 'black',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 7,
+                  marginTop: 10,
+                  marginLeft: 30,
                 }}>
                 <Text
                   style={{
-                    color: '#fff',
+                    color: '#000',
                   }}>
-                  Create Account
+                  Forget Password.!
+                </Text>
+              </TouchableOpacity>
+
+              <View
+                style={{
+                  width: '100%',
+                  marginTop: 40,
+                  alignItems: 'center',
+                }}>
+                <AppBtn
+                  onPress={() => this.createUser()}
+                  txt={'Create Account'}
+                />
+              </View>
+            </View>
+
+            <View
+              style={{
+                // backgroundColor: '#faf',
+                height: 100,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                // padding: 15,
+              }}>
+              <Text
+                style={{
+                  marginTop: 5,
+                  color: '#000',
+                }}>
+                already have an account?{'  '}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('BasicsTwo');
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    textDecorationLine: 'underline',
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                  }}>
+                  Sign In
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
-
-          <View
-            style={{
-              // backgroundColor: '#faf',
-              height: '10%',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              padding: 15,
-            }}>
-            <Text
-              style={{
-                marginTop: 5,
-              }}>
-              already have an account?{'  '}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                const sign = 'signIn';
-                this.sendData2(sign);
-              }}>
-              <Text
-                style={{
-                  color: 'red',
-                  textDecorationLine: 'underline',
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                }}>
-                Sign In
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
+      </ImageBackground>
     );
   }
 }
