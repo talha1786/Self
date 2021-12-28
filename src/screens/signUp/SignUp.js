@@ -20,7 +20,8 @@ import {
   widthPercentageToDP as w,
   heightPercentageToDP as h,
 } from 'react-native-responsive-screen';
-
+import validator from 'email-validator';
+import {baseUrl, axiosInstance} from '../../services/Api';
 export class SignUp extends React.Component {
   state = {
     name: '',
@@ -64,6 +65,7 @@ export class SignUp extends React.Component {
     // }
     //===========
 
+    const res = validator.validate(this.state.email);
     const data = {
       name: this.state.name,
       email: this.state.email,
@@ -72,8 +74,8 @@ export class SignUp extends React.Component {
 
     this.state.name === ''
       ? alert('Name is required')
-      : this.state.email === ''
-      ? alert('Email is required')
+      : !res
+      ? alert('Invalid Email')
       : this.state.password.length < 8
       ? alert('Password must contain 8 characters')
       : AsyncStorage.setItem('userData', JSON.stringify(data), () => {

@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  AsyncStorage,
+  TouchableOpacity,
+} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {AppBtn, NavHeader} from '../../components';
 export class EditProfile extends React.Component {
@@ -18,6 +24,17 @@ export class EditProfile extends React.Component {
       name: navProps.name,
       email: navProps.email,
       password: navProps.password,
+    });
+  };
+
+  updateUser = () => {
+    const data = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+    };
+    AsyncStorage.setItem('userData', JSON.stringify(data), () => {
+      this.props.navigation.replace('TabNavigator');
     });
   };
 
@@ -74,7 +91,7 @@ export class EditProfile extends React.Component {
                 marginTop: 10,
               }}
               placeholder={'Email'}
-              value={this.state.user.email}
+              value={this.state.email}
               editable={false}
             />
 
@@ -91,7 +108,7 @@ export class EditProfile extends React.Component {
             />
             <AppBtn
               txt={'Update'}
-              onPress={() => this.props.navigation.replace('TabNavigator')}
+              onPress={() => this.updateUser()}
               st={{
                 marginTop: 20,
               }}

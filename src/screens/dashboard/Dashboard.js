@@ -20,19 +20,19 @@ export class Dashboard extends React.Component {
   };
 
   componentDidMount = () => {
-    const navProps = this.props.route.params;
-    if (navProps !== undefined) {
-      this.setState({
-        user: navProps,
-        name: navProps.name,
-        email: navProps.email,
-        password: navProps.password,
-      });
-      // console.warn('gift ha');
-    } else {
-      // console.warn('no roti pani');
-    }
+    AsyncStorage.getItem('userData', (err, res) => {
+      if (!err && res !== null) {
+        const data = JSON.parse(res);
+        this.setState({
+          user: data,
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        });
+      }
+    });
   };
+
   render() {
     const navigation = this.props.navigation;
     return (
@@ -99,7 +99,7 @@ export class Dashboard extends React.Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate('TabList');
+                navigation.navigate('ImgPick');
               }}
               style={{
                 height: '90%',
@@ -114,7 +114,7 @@ export class Dashboard extends React.Component {
                 style={{
                   color: '#fff',
                 }}>
-                Tab List
+                Image Picker
               </Text>
             </TouchableOpacity>
           </View>
@@ -177,6 +177,34 @@ export class Dashboard extends React.Component {
                   color: '#fff',
                 }}>
                 Edit Profile
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              height: '15%',
+              // backgroundColor: '#a4a',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('DateTimePick');
+              }}
+              style={{
+                height: '90%',
+                width: '90%',
+                borderColor: 'red',
+                borderWidth: 1,
+                borderRadius: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  color: '#fff',
+                }}>
+                Date Time Picker
               </Text>
             </TouchableOpacity>
           </View>
